@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Task_Management_System.Models;
+
 namespace Task_Management_System
 {
     public class Program
@@ -8,6 +11,9 @@ namespace Task_Management_System
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            //connection to database 
+            builder.Services.AddDbContext<TaskManagmentContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("con")));
 
             var app = builder.Build();
 
