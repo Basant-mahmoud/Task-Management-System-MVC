@@ -1,0 +1,72 @@
+﻿@model Task_Management_System.Controllers.DTO.CreateTaskDTO
+
+@{
+    ViewData["Title"] = "Create Task";
+}
+
+<h2 class="text-center">Create New Task</h2>
+
+<div class="container mt-4">
+    <form asp-action="Create" method="post">
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Task Name</label>
+            <input asp-for="Name" class="form-control" required />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Description</label>
+            <textarea asp-for="Description" class="form-control" rows="3" required></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DueDate" class="form-label">Due Date</label>
+            <input asp-for="DueDate" type="date" class="form-control" />
+            <span asp-validation-for="DueDate" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CreatedAt" class="form-label">Created At</label>
+            <input asp-for="CreatedAt" type="datetime-local" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" readonly />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CreatedById" class="form-label">Created By (User ID)</label>
+            <input asp-for="CreatedById" type="number" class="form-control" required />
+            <span asp-validation-for="CreatedById" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="AssignedToId" class="form-label">Assigned To (User ID)</label>
+            <input asp-for="AssignedToId" type="number" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="TaskPriority" class="form-label">Task Priority</label>
+            <select asp-for="TaskPriority" class="form-select">
+                <option value="0">Low</option>
+                <option value="1">Medium</option>
+                <option value="2">High</option>
+            </select>
+            <span asp-validation-for="TaskPriority" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="TaskStatus" class="form-label">Task Status</label>
+            <select asp-for="TaskStatus" class="form-select">
+                <option value="0">To Do</option>
+                <option value="1">In Progress</option>
+                <option value="2">Done</option>
+            </select>
+            <span asp-validation-for="TaskStatus" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Task</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
