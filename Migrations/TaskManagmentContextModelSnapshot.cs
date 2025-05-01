@@ -17,7 +17,7 @@ namespace Task_Management_System.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.3")
+                .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -44,7 +44,7 @@ namespace Task_Management_System.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ActivityLogs");
+                    b.ToTable("ActivityLogs", (string)null);
                 });
 
             modelBuilder.Entity("Task_Management_System.Models.Notification", b =>
@@ -77,7 +77,7 @@ namespace Task_Management_System.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("Task_Management_System.Models.Project", b =>
@@ -113,7 +113,7 @@ namespace Task_Management_System.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("Task_Management_System.Models.Task", b =>
@@ -160,7 +160,7 @@ namespace Task_Management_System.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tasks", (string)null);
                 });
 
             modelBuilder.Entity("Task_Management_System.Models.TaskAttachment", b =>
@@ -186,7 +186,7 @@ namespace Task_Management_System.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("TaskAttachments");
+                    b.ToTable("TaskAttachments", (string)null);
                 });
 
             modelBuilder.Entity("Task_Management_System.Models.TaskComment", b =>
@@ -216,7 +216,7 @@ namespace Task_Management_System.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TaskComments");
+                    b.ToTable("TaskComments", (string)null);
                 });
 
             modelBuilder.Entity("Task_Management_System.Models.Team", b =>
@@ -237,7 +237,7 @@ namespace Task_Management_System.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Teams", (string)null);
                 });
 
             modelBuilder.Entity("Task_Management_System.Models.TeamMember", b =>
@@ -265,7 +265,7 @@ namespace Task_Management_System.Migrations
                     b.HasIndex("UserId", "TeamId")
                         .IsUnique();
 
-                    b.ToTable("TeamMembers");
+                    b.ToTable("TeamMembers", (string)null);
                 });
 
             modelBuilder.Entity("Task_Management_System.Models.User", b =>
@@ -297,7 +297,7 @@ namespace Task_Management_System.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Task_Management_System.Models.ActivityLog", b =>
