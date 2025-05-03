@@ -1,4 +1,6 @@
-﻿using Task_Management_System.Models;
+﻿using Task_Management_System.Controllers.DTO;
+using Task_Management_System.Models;
+using Task_Management_System.Models.Enum;
 using Task_Management_System.Repository.Pro;
 using Task = System.Threading.Tasks.Task;
 namespace Task_Management_System.Services.projects
@@ -10,10 +12,19 @@ namespace Task_Management_System.Services.projects
         {
             _ProjectRepo = projectRepo;
         }
-        public async Task<int> AddAsync(Project project)
+        public async Task<int> AddAsync(ProjectDto projectDto)
         {
             try
             {
+                Project project = new Project
+                {
+                    Title = projectDto.Title,
+                    Description = projectDto.Description,
+                    StartDate = projectDto.StartDate.ToString(),
+                    EndDate = projectDto.EndDate.ToString(),
+                    Status = projectDto.Status.ToString(),
+                    TeamId = projectDto.TeamId
+                };
                 return await _ProjectRepo.AddAsync(project);
             }
             catch (Exception ex)
@@ -21,7 +32,7 @@ namespace Task_Management_System.Services.projects
                 throw new InvalidOperationException("Error occurred while adding the project.", ex);
             }
         }
-        public async Task UpdateAsync(int id, Project updatedProject)
+        public async Task UpdateAsync(int id, ProjectDto updatedProject)
         {
             try
             {
@@ -30,9 +41,9 @@ namespace Task_Management_System.Services.projects
                 {
                     throw new KeyNotFoundException("Project not found.");
                 }
-                existingProject.EndDate = updatedProject.EndDate;
-                existingProject.StartDate = updatedProject.StartDate;
-                existingProject.Status = updatedProject.Status;
+                existingProject.EndDate = updatedProject.EndDate.ToString();
+                existingProject.StartDate = updatedProject.StartDate.ToString();
+                existingProject.Status = updatedProject.Status.ToString();
                 existingProject.Title = updatedProject.Title;
                 existingProject.Description = updatedProject.Description;
                 existingProject.TeamId = updatedProject.TeamId;
@@ -67,18 +78,27 @@ namespace Task_Management_System.Services.projects
                 throw new InvalidOperationException("Error occurred while deleting the project.", ex);
             }
         }
-        public async Task<IEnumerable<Project>>  GetAllAsync()
+        public async Task<IEnumerable<ProjectDto>>  GetAllAsync()
         {
             try
             {
-                return await _ProjectRepo.GetAllAsync();
+                var projects= await _ProjectRepo.GetAllAsync();
+                var projectDto=projects.Select(project=>new ProjectDto
+                {
+                    Description= project.Description,
+                    EndDate= DateTime.Parse(project.EndDate),
+                    StartDate= DateTime.Parse(project.StartDate),
+                    Status = Enum.Parse<ProjectStatus>(project.Status),
+                    TeamId = project.TeamId
+                }).ToList();
+                return projectDto;
             }
             catch (Exception ex)
             {
                 throw new InvalidOperationException("Error occurred while fetching projects.", ex);
             }
         }
-        public async Task<Project> GetAsync(int id)
+       /* public async Task<ProjectDto> GetAsync(int id)
         {
             try
             {
@@ -94,6 +114,6 @@ namespace Task_Management_System.Services.projects
             {
                 throw new InvalidOperationException("Error occurred while fetching projects.", ex);
             }
-        }
+        }*/
     }
 }
