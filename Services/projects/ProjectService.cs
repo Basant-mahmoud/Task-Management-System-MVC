@@ -25,14 +25,19 @@ namespace Task_Management_System.Services.projects
                     Status = projectDto.Status.ToString(),
                     TeamId = projectDto.TeamId
                 };
-                return await _ProjectRepo.AddAsync(project);
+                var result = await _ProjectRepo.AddAsync(project);
+
+                if (result == 0)
+                    throw new Exception("Error occurred while adding the project.");
+                return result;
+                
             }
             catch (Exception ex)
             {
                 throw new InvalidOperationException("Error occurred while adding the project.", ex);
             }
         }
-        public async Task UpdateAsync(int id, ProjectDto updatedProject)
+        public async Task<int> UpdateAsync(int id, ProjectDto updatedProject)
         {
             try
             {
@@ -48,21 +53,27 @@ namespace Task_Management_System.Services.projects
                 existingProject.Description = updatedProject.Description;
                 existingProject.TeamId = updatedProject.TeamId;
 
-                await _ProjectRepo.UpdateProjectAsync(existingProject);
+                var result = await _ProjectRepo.UpdateProjectAsync(existingProject);
+                if (result == 0)
+                    throw new Exception("Error in Update.");
+                return result;
             }
             catch (Exception ex)
             {
                 throw new InvalidOperationException("Error occurred while updating the project.", ex);
             }
         }
-        public async Task DeleteAsync(int id)
+        public async Task<int> DeleteAsync(int id)
         {
             try
             {
                 var project = await _ProjectRepo.GetAsync(id);
                 if (project != null)
                 {
-                    await _ProjectRepo.DeleteAsync(project);
+                    var result=await _ProjectRepo.DeleteAsync(project);
+                    if (result == 0)
+                        throw new Exception("Error in Delete.");
+                    return result;
 
                 }
                 else
@@ -83,6 +94,10 @@ namespace Task_Management_System.Services.projects
             try
             {
                 var projects= await _ProjectRepo.GetAllAsync();
+                if (!projects.Any())
+                {
+                    return new List<ProjectDto>();
+                }
                 var projectDto=projects.Select(project=>new ProjectDto
                 {
                     Description= project.Description,
@@ -98,22 +113,31 @@ namespace Task_Management_System.Services.projects
                 throw new InvalidOperationException("Error occurred while fetching projects.", ex);
             }
         }
-       /* public async Task<ProjectDto> GetAsync(int id)
+        public async Task<ProjectDto> GetAsync(int id)
         {
             try
             {
-                var result = await _ProjectRepo.GetAsync(id);
-                if (result == null)
+                var exsitingProject = await _ProjectRepo.GetAsync(id);
+                if (exsitingProject == null)
                 {
                     throw new KeyNotFoundException("Project not found.");
 
                 }
-                return result;
+                var p = new ProjectDto
+                {
+                    Description = exsitingProject.Description,
+                    EndDate = DateTime.Parse(exsitingProject.EndDate),
+                    StartDate = DateTime.Parse(exsitingProject.StartDate),
+                    Status = Enum.Parse<ProjectStatus>(exsitingProject.Status),
+                    TeamId = exsitingProject.TeamId
+
+                };
+                return p;
             }
             catch (Exception ex)
             {
                 throw new InvalidOperationException("Error occurred while fetching projects.", ex);
             }
-        }*/
+        }
     }
 }

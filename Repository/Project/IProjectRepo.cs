@@ -7,7 +7,7 @@ namespace Task_Management_System.Repository.Pro
         Task<IEnumerable<Project>> GetAllAsync();
         Task<Project> GetAsync(int id);
         Task <int> AddAsync(Project project);
-        Task UpdateProjectAsync(Project project);
-        Task DeleteAsync(Project project);
+        Task<int> UpdateProjectAsync(Project project);
+        Task<int> DeleteAsync(Project project);
     }
 }

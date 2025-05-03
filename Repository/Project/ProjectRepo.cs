@@ -21,10 +21,10 @@ namespace Task_Management_System.Repository.Pro
         }
 
 
-        public async Task DeleteAsync(Project project)
+        public async Task<int> DeleteAsync(Project project)
         {
             _context.Projects.Remove(project);
-            await _context.SaveChangesAsync();
+           return await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Project>> GetAllAsync()
@@ -41,10 +41,10 @@ namespace Task_Management_System.Repository.Pro
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task UpdateProjectAsync(Project project)
+        public async Task<int> UpdateProjectAsync(Project project)
         {
              _context.Projects.Update(project);
-            await _context.SaveChangesAsync();
+           return await _context.SaveChangesAsync();
 
         }
     }
