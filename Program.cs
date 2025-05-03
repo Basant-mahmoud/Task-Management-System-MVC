@@ -13,7 +13,7 @@ namespace Task_Management_System
             builder.Services.AddControllersWithViews();
             //connection to database 
             builder.Services.AddDbContext<TaskManagmentContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("con")));
+                options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("con")));
 
             var app = builder.Build();
 

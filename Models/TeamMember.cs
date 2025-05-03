@@ -3,13 +3,13 @@
     public class TeamMember
     {
         public int Id { get; set; }
+        public string IsLeader { get; set; }
 
         public int UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         public int TeamId { get; set; }
-        public Team Team { get; set; }
+        public virtual Team Team { get; set; }
 
-        public string IsLeader { get; set; }
     }
 }

@@ -12,18 +12,18 @@ namespace Task_Management_System.Models
         public string Description { get; set; }
         public string Priority { get; set; } // High, Medium, Low
         public string Status { get; set; } // ToDo, InProgress, Done
-        public DateTime DueDate { get; set; }
+        public string DueDate { get; set; }
 
         public int AssignedToUserId { get; set; } // user asign to many tasks
-        public User AssignedToUser { get; set; }
+        public virtual User AssignedToUser { get; set; }
 
         public int CreatedByUserId { get; set; } // user can create many tasks
-        public User CreatedByUser { get; set; }
+        public virtual User CreatedByUser { get; set; }
 
         public int ProjectId { get; set; } // task related to one project
-        public Project Project { get; set; }
+        public virtual Project Project { get; set; }
 
-        public ICollection<TaskAttachment> Attachments { get; set; } // task has many attachment
-        public ICollection<TaskComment> Comments { get; set; } // task has many comment 
+        public virtual ICollection<TaskAttachment> Attachments { get; set; } // task has many attachment
+        public virtual ICollection<TaskComment> Comments { get; set; } // task has many comment 
     }
 }

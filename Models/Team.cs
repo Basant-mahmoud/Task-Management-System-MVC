@@ -8,7 +8,7 @@ namespace Task_Management_System.Models
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public ICollection<TeamMember> Members { get; set; }
-        public ICollection<Project> Projects { get; set; }
+        public virtual ICollection<TeamMember> Members { get; set; }
+        public virtual ICollection<Project> Projects { get; set; }
     }
 }

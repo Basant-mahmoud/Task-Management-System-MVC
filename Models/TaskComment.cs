@@ -7,12 +7,12 @@ namespace Task_Management_System.Models
     {
         public int Id { get; set; }
         public string CommentText { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public String CreatedAt { get; set; }
 
         public int TaskId { get; set; }
-        public Task Task { get; set; }
+        public virtual Task Task { get; set; }
 
         public int UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
     }
 }

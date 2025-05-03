@@ -30,14 +30,14 @@ namespace Task_Management_System.Repository.Pro
         public async Task<IEnumerable<Project>> GetAllAsync()
         {
             return await _context.Projects
-                 .Include(p => p.Team)
+                 /*.Include(p => p.Team)*/
                  .ToListAsync();
         }
 
         public async Task<Project> GetAsync(int id)
         {
             return await _context.Projects
-                .Include(p => p.Team)
+              /*  .Include(p => p.Team)*/
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 

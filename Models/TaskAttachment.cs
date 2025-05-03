@@ -7,7 +7,7 @@
         public string FileUrl { get; set; }
 
         public int TaskId { get; set; } 
-        public Task Task { get; set; }
+        public virtual Task Task { get; set; }
 
     }
 }
