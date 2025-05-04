@@ -7,8 +7,8 @@ namespace Task_Management_System.Services.projects
     public interface  IProjectService
     {
         Task<int> AddAsync(ProjectDto project);
-        Task UpdateAsync(int id, ProjectDto updatedProject);
-        Task DeleteAsync(int id);
+        Task<int> UpdateAsync(int id, ProjectDto updatedProject);
+        Task<int> DeleteAsync(int id);
         Task<IEnumerable<ProjectDto>> GetAllAsync();
         Task<ProjectDto> GetAsync(int id);
     }
