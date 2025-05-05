@@ -1,6 +1,6 @@
 ﻿namespace Task_Management_System.Repository.Team
 {
-    public interface ITeamRepo
+    public class TeamRepo
     {
     }
 }
