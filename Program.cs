@@ -3,6 +3,7 @@ using Task_Management_System.Models;
 using Task_Management_System.Repository.Pro;
 using Task_Management_System.Services.projects;
 
+
 namespace Task_Management_System
 {
     public class Program
@@ -21,7 +22,7 @@ namespace Task_Management_System
             builder.Services.AddScoped<IProjectService, ProjectService>();
 
             // repo
-            builder.Services.AddScoped<ITeamRepo, ProjectRepo>();
+            builder.Services.AddScoped<IProjectRepo, ProjectRepo>();
 
             var app = builder.Build();
 

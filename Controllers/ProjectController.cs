@@ -81,7 +81,7 @@ namespace Task_Management_System.Controllers
             // وضع الـ teams في الـ ViewData
             // ViewData["Teams"] = new SelectList(teams, "Id", "Name");
 
-           // return PartialView("_DetailsProject", project); // تمرير المشروع للـ View
+            return PartialView("_DetailsProject", project); // تمرير المشروع للـ View
         }
 
 

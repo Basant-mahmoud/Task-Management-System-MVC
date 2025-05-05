@@ -1,6 +1,47 @@
-﻿namespace Task_Management_System.Repository.Team
+﻿
+using Microsoft.EntityFrameworkCore;
+using Task_Management_System.Models;
+
+namespace Task_Management_System.Repository.Team
 {
-    public class TeamRepo
+    public class TeamRepo : ITeamRepo
     {
+        private readonly TaskManagmentContext _context;
+        public TeamRepo(TaskManagmentContext context)
+        {
+            _context = context;
+        }
+        public async Task<int> AddAsync(Models.Team team)
+        {
+            _context.Teams.Add(team);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> DeleteAsync(Models.Team team)
+        {
+            _context.Teams.Remove(team);
+            return await _context.SaveChangesAsync();
+           
+        }
+
+        public async Task<IEnumerable<Models.Team>> GetAllAsync()
+        {
+            return await _context.Teams
+                 .Include(m => m.Members)
+                 .ToListAsync();
+        }
+
+        public async Task<Models.Team> GetAsync(int id)
+        {
+            return await _context.Teams
+                .Include(m=>m.Members)
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public Task<int> UpdateProjectAsync(Models.Team team)
+        {
+            _context.Teams.Update(team);
+            return _context.SaveChangesAsync();
+        }
     }
 }

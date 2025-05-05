@@ -5,7 +5,7 @@ using Task_Management_System.Repository.Pro;
 using Task = System.Threading.Tasks.Task;
 namespace Task_Management_System.Services.projects
 {
-    public class ProjectService
+    public class ProjectService: IProjectService
     {
         private readonly IProjectRepo _ProjectRepo;
         public ProjectService(IProjectRepo projectRepo)
