@@ -39,9 +39,14 @@ namespace Task_Management_System.Repository.Pro
         public async Task<Project> GetAsync(int id)
         {
             return await _context.Projects
-               .Include(p => p.Team)
-               .ThenInclude(m=>m.Members)
-                 .ThenInclude(u => u.User)
+                .Include(p => p.Team)
+                    .ThenInclude(t => t.Members)
+                        .ThenInclude(m => m.User)
+                            .ThenInclude(u => u.AssignedTasks)
+                .Include(p => p.Team)
+                    .ThenInclude(t => t.Members)
+                        .ThenInclude(m => m.User)
+                            .ThenInclude(u => u.CreatedTasks)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
