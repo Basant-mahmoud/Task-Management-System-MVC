@@ -9,8 +9,9 @@ namespace Task_Management_System.Controllers.DTO
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public ProjectStatus Status { get; set; } 
+        public ProjectStatus Status { get; set; }
+        public List<TeamDto> Teams { get; set; } 
+        public List<int> TeamIds { get; set; } 
 
-        public int? TeamId { get; set; }
     }
 }

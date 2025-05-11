@@ -1,17 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using Task_Management_System.Controllers.DTO;
+using Task_Management_System.Models;
 using Task_Management_System.Services.projects;
+using Task_Management_System.Services.Teams;
 
 namespace Task_Management_System.Controllers
 {
     public class ProjectController : Controller
     {
         private readonly IProjectService _projectService;
-        public ProjectController(IProjectService projectService)
+        private readonly ITeamService _teamService;
+
+        public ProjectController(IProjectService projectService, ITeamService teamService)
         {
             _projectService = projectService;
+            _teamService = teamService;
         }
 
 
@@ -21,38 +27,49 @@ namespace Task_Management_System.Controllers
             var projects = await _projectService.GetAllAsync();
             return View(projects);
         }
-        public IActionResult Create()
+        // for open form
+        public async Task<IActionResult> Create()
         {
-            var dto = new ProjectDto();
-            return PartialView("_CreateProject");
+            var projectDto = new ProjectDto
+            {
+                Teams = (List<TeamDto>)await _teamService.GetAllAsync()
+            };
+            return View("_CreateProject", projectDto);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(ProjectDto projectDto)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 await _projectService.AddAsync(projectDto);
                 return RedirectToAction("Index");
             }
-            return View(projectDto);
+            projectDto.Teams = (List<TeamDto>)await _teamService.GetAllAsync(); 
+            return PartialView("_CreateProject", projectDto);
         }
         public async Task<IActionResult> Edit(int id)
         {
-            var project = await _projectService.GetAsync(id); // جلب المشروع بناءً على الـ Id
+            var project = await _projectService.GetAsync(id);
             if (project == null)
             {
                 return NotFound();
             }
 
-           // var teams = _projectService.GetTeams();
-
-            // وضع الـ teams في الـ ViewData
-           // ViewData["Teams"] = new SelectList(teams, "Id", "Name");
-
-            return PartialView("_EditProject", project); // تمرير المشروع للـ View
+            return PartialView("_EditProject", project); 
         }
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, ProjectDto projectDto)
+        {
+            var project = await _projectService.UpdateAsync(id, projectDto); 
+            if (project == null)
+            {
+                return NotFound();
+            }
 
+            return PartialView("_EditProject", project); 
+        }
+        //
         public async Task<IActionResult> Details(int id)
         {
             var project = await _projectService.GetAsync(id); // جلب المشروع بناءً على الـ Id

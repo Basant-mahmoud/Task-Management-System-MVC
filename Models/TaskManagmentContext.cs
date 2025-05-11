@@ -58,11 +58,20 @@ namespace Task_Management_System.Models
                 .HasOne(ta => ta.Task)
                 .WithMany(t => t.Attachments)
                 .HasForeignKey(ta => ta.TaskId);
-            // project ha many team
-            modelBuilder.Entity<Project>()
-                .HasOne(p => p.Team)
-                .WithMany(t => t.Projects)
-                .HasForeignKey(p => p.TeamId);
+            // project has many team and team has many project
+            modelBuilder.Entity<ProjectTeam>()
+           .HasKey(pt => new { pt.ProjectId, pt.TeamId });
+
+            modelBuilder.Entity<ProjectTeam>()
+                .HasOne(pt => pt.Project)
+                .WithMany(p => p.ProjectTeams)
+                .HasForeignKey(pt => pt.ProjectId);
+
+            modelBuilder.Entity<ProjectTeam>()
+                .HasOne(pt => pt.Team)
+                .WithMany(t => t.ProjectTeams)
+                .HasForeignKey(pt => pt.TeamId);
+
             // user has many log
             modelBuilder.Entity<ActivityLog>()
                 .HasOne(al => al.User)

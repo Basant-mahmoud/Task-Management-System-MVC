@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Task_Management_System.Models;
 using Task_Management_System.Repository.Pro;
+using Task_Management_System.Repository.Team;
 using Task_Management_System.Services.projects;
+using Task_Management_System.Services.Teams;
 
 
 namespace Task_Management_System
@@ -20,9 +22,12 @@ namespace Task_Management_System
             // services
             // تسجيل الخدمة في الـ Dependency Injection Container
             builder.Services.AddScoped<IProjectService, ProjectService>();
+            builder.Services.AddScoped<ITeamService, TeamService>();
+
 
             // repo
             builder.Services.AddScoped<IProjectRepo, ProjectRepo>();
+            builder.Services.AddScoped<ITeamRepo, TeamRepo>();
 
             var app = builder.Build();
 

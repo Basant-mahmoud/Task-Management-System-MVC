@@ -12,20 +12,14 @@ namespace Task_Management_System.Services.projects
         {
             _ProjectRepo = projectRepo;
         }
+       
+
         public async Task<int> AddAsync(ProjectDto projectDto)
         {
             try
             {
-                Project project = new Project
-                {
-                    Title = projectDto.Title,
-                    Description = projectDto.Description,
-                    StartDate = projectDto.StartDate.ToString(),
-                    EndDate = projectDto.EndDate.ToString(),
-                    Status = projectDto.Status.ToString(),
-                    TeamId = projectDto.TeamId
-                };
-                var result = await _ProjectRepo.AddAsync(project);
+                var result = await _ProjectRepo.AddProjectAsync(projectDto);
+
 
                 if (result == 0)
                     throw new Exception("Error occurred while adding the project.");
@@ -46,16 +40,26 @@ namespace Task_Management_System.Services.projects
                 {
                     throw new KeyNotFoundException("Project not found.");
                 }
-                existingProject.EndDate = updatedProject.EndDate.ToString();
-                existingProject.StartDate = updatedProject.StartDate.ToString();
-                existingProject.Status = updatedProject.Status.ToString();
+
                 existingProject.Title = updatedProject.Title;
                 existingProject.Description = updatedProject.Description;
-                existingProject.TeamId = updatedProject.TeamId;
+                existingProject.StartDate = updatedProject.StartDate.ToString();
+                existingProject.EndDate = updatedProject.EndDate.ToString();
+                existingProject.Status = updatedProject.Status.ToString();
+
+                existingProject.ProjectTeams.Clear();
+
+                existingProject.ProjectTeams = updatedProject.Teams.Select(teamDto => new ProjectTeam
+                {
+                    TeamId = teamDto.TeamId,
+                    ProjectId = existingProject.Id  
+                }).ToList();
 
                 var result = await _ProjectRepo.UpdateProjectAsync(existingProject);
+
                 if (result == 0)
-                    throw new Exception("Error in Update.");
+                    throw new Exception("Error occurred while updating the project.");
+
                 return result;
             }
             catch (Exception ex)
@@ -63,6 +67,7 @@ namespace Task_Management_System.Services.projects
                 throw new InvalidOperationException("Error occurred while updating the project.", ex);
             }
         }
+
         public async Task<int> DeleteAsync(int id)
         {
             try
@@ -100,11 +105,17 @@ namespace Task_Management_System.Services.projects
                 }
                 var projectDto=projects.Select(project=>new ProjectDto
                 {
+                    Id=project.Id,
                     Description= project.Description,
+                    Title=project.Title,
                     EndDate= DateTime.Parse(project.EndDate),
                     StartDate= DateTime.Parse(project.StartDate),
                     Status = Enum.Parse<ProjectStatus>(project.Status),
-                    TeamId = project.TeamId
+                    Teams = project.ProjectTeams?.Select(pt => new TeamDto
+                    {
+                         TeamId = pt.TeamId,
+                        Name = pt.Team.Name 
+                    }).ToList() ?? new List<TeamDto>()
                 }).ToList();
                 return projectDto;
             }
@@ -129,8 +140,11 @@ namespace Task_Management_System.Services.projects
                     EndDate = DateTime.Parse(exsitingProject.EndDate),
                     StartDate = DateTime.Parse(exsitingProject.StartDate),
                     Status = Enum.Parse<ProjectStatus>(exsitingProject.Status),
-                    TeamId = exsitingProject.TeamId
-
+                    Teams = exsitingProject.ProjectTeams?.Select(pt => new TeamDto
+                    {
+                        TeamId = pt.TeamId,
+                        Name = pt.Team.Name 
+                    }).ToList() ?? new List<TeamDto>()
                 };
                 return p;
             }

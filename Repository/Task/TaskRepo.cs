@@ -45,7 +45,7 @@ namespace Task_Management_System.Repository.Task
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public Task<int> UpdateProjectAsync(Models.Task task)
+        public Task<int> UpdateAsync(Models.Task task)
         {
             _context.Tasks.Update(task);
             return _context.SaveChangesAsync();

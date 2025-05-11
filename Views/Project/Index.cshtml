@@ -4,79 +4,41 @@
     ViewData["Title"] = "Projects";
 }
 
-<h1>Projects</h1>
+<h2>Projects</h2>
+<a href="/Project/Create" class="btn btn-success">Create Project</a>
 
-<!-- عرض المشاريع باستخدام Bootstrap Cards -->
-<div class="row">
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Project ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
     @foreach (var project in Model)
     {
-        <div class="col-sm-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">@project.Title</h5>
-                    <p class="card-text">@project.Description</p>
-                    <p class="card-text"><strong>Status:</strong> @project.Status.ToString()</p>
-                    <p class="card-text"><strong>Start Date:</strong> @project.StartDate.ToString("yyyy-MM-dd")</p>
-                    <p class="card-text"><strong>End Date:</strong> @project.EndDate.ToString("yyyy-MM-dd")</p>
-                    <p class="card-text"><strong>Team Name:</strong> @project.TeamId</p>
-                    <a href="#" class="btn btn-primary  details-project" data-id="@project.Id">ViewDetails</a>
-                    <a href="#" class="btn btn-primary edit-project" data-id="@project.Id">UpdateProject</a>
-                    <a href="#" class="btn btn-primary delete-project" data-id="@project.Id">DeleteProject</a>
+        <tr>
+            <td>@project.Id</td>
+            <td>@project.Title</td>
+            <td>@project.Description</td>
+             <td>@project.Status</td>
+              <td>@project.StartDate</td>
+              <td>@project.EndDate</td>
 
-                </div>
-            </div>
-        </div>
+            <td>
+                <a href="@Url.Action("Details", "Projects", new { id = project.Id })" class="btn btn-info btn-sm">Details</a>
+                <a href="@Url.Action("Edit", "Projects", new { id = project.Id })" class="btn btn-warning btn-sm">Edit</a>
+                <a href="@Url.Action("Delete", "Projects", new { id = project.Id })" class="btn btn-danger btn-sm">Delete</a>
+                <a href="@Url.Action("Create", "Tasks", new { id = project.Id })" class="btn btn-success btn-sm">Create Task</a>
+            </td>
+        </tr>
     }
-</div>
+    </tbody>
+</table>
 
-<!-- زر لفتح الـ Partial View لإضافة مشروع جديد -->
-<button class="btn btn-success" id="addProjectBtn" style="margin-top: 20px;">Add New Project</button>
-
-<!-- مكان لعرض الـ Partial View -->
-<div id="addProjectFormContainer"></div>
-<div id="EditeProjectFormContainer"></div>
-<div id="DetailsProjectFormContainer"></div>
-
-
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('#addProjectBtn').click(function () {
-                $.get('@Url.Action("Create", "Project")', function (data) {
-                    $('#addProjectFormContainer').html(data);
-                });
-            });
-        });
-
-                $(document).ready(function () {
-            $('.edit-project').click(function (e) {
-                e.preventDefault();
-                var projectId = $(this).data('id');
-
-                $.get('/Project/Edit/' + projectId, function (data) {
-                    $('#EditeProjectFormContainer').html(data);
-                });
-            });
-        });
-          $(document).ready(function () {
-            $('.details-project').click(function (e) {
-                e.preventDefault();
-                var projectId = $(this).data('id');
-
-                $.get('/Project/Details/' + projectId, function (data) {
-                    $('#DetailsProjectFormContainer').html(data);
-                });
-            });
-        });
-
-          $(document).ready(function () {
-            $('.delete-project').click(function () {
-                $.get('@Url.Action("Delete", "Project")', function (data) {
-                    $('#DetailsProjectFormContainer').html(data);
-                });
-            });
-        });
-
-    </script>
-}
 
