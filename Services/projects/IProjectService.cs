@@ -11,5 +11,6 @@ namespace Task_Management_System.Services.projects
         Task<int> DeleteAsync(int id);
         Task<IEnumerable<ProjectDto>> GetAllAsync();
         Task<ProjectDto> GetAsync(int id);
+        Task<ProjectDto> GetDetailsAsync(int id);
     }
 }

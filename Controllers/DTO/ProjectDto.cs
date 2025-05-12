@@ -10,8 +10,8 @@ namespace Task_Management_System.Controllers.DTO
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public ProjectStatus Status { get; set; }
-        public List<TeamDto> Teams { get; set; } 
-        public List<int> TeamIds { get; set; } 
+        public List<TeamDto> Teams { get; set; } // get all team in system
+        public List<int> TeamIds { get; set; } // to insert team id 
 
     }
 }

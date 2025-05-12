@@ -29,7 +29,7 @@
             @foreach (var item in Model.Teams)
             {
             <div>
-                <input type="checkbox" name="TeamIds"  />
+                <input type="checkbox" name="TeamIds" value="@item.TeamId" />
                 <label>@item.Name</label>
             </div>
             }

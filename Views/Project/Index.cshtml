@@ -31,7 +31,7 @@
               <td>@project.EndDate</td>
 
             <td>
-                <a href="@Url.Action("Details", "Projects", new { id = project.Id })" class="btn btn-info btn-sm">Details</a>
+                <a href="@Url.Action("Details", "Project", new { id = project.Id })" class="btn btn-info btn-sm">Details</a>
                 <a href="@Url.Action("Edit", "Project", new { id = project.Id })" class="btn btn-warning btn-sm">Edit</a>
                     <button class="btn btn-danger delete-button" data-id="@project.Id">Delete</button>
                     <a href="@Url.Action("Create", "Tasks", new { id = project.Id })" class="btn btn-success btn-sm">Create Task</a>

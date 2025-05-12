@@ -72,18 +72,14 @@ namespace Task_Management_System.Controllers
         //
         public async Task<IActionResult> Details(int id)
         {
-            var project = await _projectService.GetAsync(id); // جلب المشروع بناءً على الـ Id
+            var project = await _projectService.GetDetailsAsync(id);
             if (project == null)
             {
                 return NotFound();
             }
 
-            // var teams = _projectService.GetTeams();
-
-            // وضع الـ teams في الـ ViewData
-            // ViewData["Teams"] = new SelectList(teams, "Id", "Name");
-
-            return PartialView("_DetailsProject", project); // تمرير المشروع للـ View
+           
+            return PartialView("_DetailsProject", project); 
         }
         public async Task<IActionResult> Delete(int id)
         {

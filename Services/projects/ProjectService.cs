@@ -2,15 +2,18 @@
 using Task_Management_System.Models;
 using Task_Management_System.Models.Enum;
 using Task_Management_System.Repository.Pro;
+using Task_Management_System.Services.Teams;
 using Task = System.Threading.Tasks.Task;
 namespace Task_Management_System.Services.projects
 {
     public class ProjectService: IProjectService
     {
         private readonly IProjectRepo _ProjectRepo;
-        public ProjectService(IProjectRepo projectRepo)
+        private readonly ITeamService _teamService;
+        public ProjectService(IProjectRepo projectRepo, ITeamService teamService)
         {
             _ProjectRepo = projectRepo;
+            _teamService = teamService;
         }
        
 
@@ -49,9 +52,9 @@ namespace Task_Management_System.Services.projects
 
                 existingProject.ProjectTeams.Clear();
 
-                existingProject.ProjectTeams = updatedProject.Teams.Select(teamDto => new ProjectTeam
+                existingProject.ProjectTeams = updatedProject.TeamIds.Select(team => new ProjectTeam
                 {
-                    TeamId = teamDto.TeamId,
+                    TeamId = team,
                     ProjectId = existingProject.Id  
                 }).ToList();
 
@@ -128,6 +131,46 @@ namespace Task_Management_System.Services.projects
         {
             try
             {
+                var existingProject = await _ProjectRepo.GetAsync(id);
+                if (existingProject == null)
+                {
+                    throw new KeyNotFoundException("Project not found.");
+                }
+
+                var allTeams = (List<TeamDto>)await _teamService.GetAllAsync();
+
+                var selectedTeamIds = existingProject.ProjectTeams?
+                    .Select(pt => pt.TeamId)
+                    .ToList() ?? new List<int>();
+
+                // علامه للـ TeamDto إنه selected
+                foreach (var team in allTeams)
+                {
+                    if (selectedTeamIds.Contains(team.TeamId))
+                        team.IsSelected = true;
+                }
+
+                return new ProjectDto
+                {
+                    Id = existingProject.Id,
+                    Title = existingProject.Title,
+                    Description = existingProject.Description,
+                    StartDate = DateTime.Parse(existingProject.StartDate),
+                    EndDate = DateTime.Parse(existingProject.EndDate),
+                    Status = Enum.Parse<ProjectStatus>(existingProject.Status),
+                    Teams = allTeams,
+                    TeamIds = selectedTeamIds
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error occurred while fetching projects.", ex);
+            }
+        }
+        public async Task<ProjectDto> GetDetailsAsync(int id)
+        {
+            try
+            {
                 var exsitingProject = await _ProjectRepo.GetAsync(id);
                 if (exsitingProject == null)
                 {
@@ -136,7 +179,7 @@ namespace Task_Management_System.Services.projects
                 }
                 var p = new ProjectDto
                 {
-                    Id= exsitingProject.Id,
+                    Id = exsitingProject.Id,
                     Title = exsitingProject.Title,
                     Description = exsitingProject.Description,
                     EndDate = DateTime.Parse(exsitingProject.EndDate),
@@ -145,7 +188,7 @@ namespace Task_Management_System.Services.projects
                     Teams = exsitingProject.ProjectTeams?.Select(pt => new TeamDto
                     {
                         TeamId = pt.TeamId,
-                        Name = pt.Team.Name 
+                        Name = pt.Team.Name
                     }).ToList() ?? new List<TeamDto>()
                 };
                 return p;
@@ -155,5 +198,6 @@ namespace Task_Management_System.Services.projects
                 throw new InvalidOperationException("Error occurred while fetching projects.", ex);
             }
         }
+
     }
 }
