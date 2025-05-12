@@ -32,13 +32,33 @@
 
             <td>
                 <a href="@Url.Action("Details", "Projects", new { id = project.Id })" class="btn btn-info btn-sm">Details</a>
-                <a href="@Url.Action("Edit", "Projects", new { id = project.Id })" class="btn btn-warning btn-sm">Edit</a>
-                <a href="@Url.Action("Delete", "Projects", new { id = project.Id })" class="btn btn-danger btn-sm">Delete</a>
-                <a href="@Url.Action("Create", "Tasks", new { id = project.Id })" class="btn btn-success btn-sm">Create Task</a>
+                <a href="@Url.Action("Edit", "Project", new { id = project.Id })" class="btn btn-warning btn-sm">Edit</a>
+                    <button class="btn btn-danger delete-button" data-id="@project.Id">Delete</button>
+                    <a href="@Url.Action("Create", "Tasks", new { id = project.Id })" class="btn btn-success btn-sm">Create Task</a>
             </td>
         </tr>
     }
     </tbody>
 </table>
-
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.querySelectorAll(".delete-button").forEach(button => {
+        button.addEventListener("click", function () {
+            const id = this.getAttribute("data-id");
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/Project/Delete/${id}`;
+                }
+            });
+        });
+    });
+</script>

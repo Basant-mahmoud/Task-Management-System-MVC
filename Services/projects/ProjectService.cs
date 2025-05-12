@@ -136,6 +136,8 @@ namespace Task_Management_System.Services.projects
                 }
                 var p = new ProjectDto
                 {
+                    Id= exsitingProject.Id,
+                    Title = exsitingProject.Title,
                     Description = exsitingProject.Description,
                     EndDate = DateTime.Parse(exsitingProject.EndDate),
                     StartDate = DateTime.Parse(exsitingProject.StartDate),

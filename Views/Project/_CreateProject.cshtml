@@ -4,19 +4,19 @@
 <form action="/Project/Create" method="post">
     <div class="col-md-12">
         <label>Title</label>
-        <input type="text" name="Title" class="form-control" value="@Model.Title" />
+        <input type="text" name="Title" class="form-control"  />
     </div>
     <div class="col-md-12">
         <label>Description</label>
-        <textarea name="Description" class="form-control">@Model.Description</textarea>
+        <textarea name="Description" class="form-control"></textarea>
     </div>
     <div class="col-md-12">
         <label>StartDate</label>
-        <input name="StartDate" class="form-control" type="date" value="@Model.StartDate.ToString("yyyy-MM-dd")" />
+        <input name="StartDate" class="form-control" type="date"  />
     </div>
     <div class="col-md-12">
         <label>EndDate</label>
-        <input name="EndDate" class="form-control" type="date" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
+        <input name="EndDate" class="form-control" type="date"  />
     </div>
     <div class="col-md-12">
         <label>Project Status</label>
@@ -29,7 +29,7 @@
             @foreach (var item in Model.Teams)
             {
             <div>
-                <input type="checkbox" name="TeamIds" value="@item.TeamId" />
+                <input type="checkbox" name="TeamIds"  />
                 <label>@item.Name</label>
             </div>
             }
@@ -38,5 +38,5 @@
         </div>
 
    
-    <button type="submit" class="btn btn-primary mt-2">Save</button>
+    <button type="submit" class="btn btn-primary mt-2">Create</button>
 </form>

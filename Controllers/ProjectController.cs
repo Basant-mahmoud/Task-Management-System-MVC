@@ -56,18 +56,18 @@ namespace Task_Management_System.Controllers
                 return NotFound();
             }
 
-            return PartialView("_EditProject", project); 
+            return View("_EditProject", project); 
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, ProjectDto projectDto)
+        public async Task<IActionResult> Edit( ProjectDto projectDto)
         {
-            var project = await _projectService.UpdateAsync(id, projectDto); 
+            var project = await _projectService.UpdateAsync(projectDto.Id, projectDto); 
             if (project == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_EditProject", project); 
+            return RedirectToAction("Index");
         }
         //
         public async Task<IActionResult> Details(int id)
@@ -88,17 +88,11 @@ namespace Task_Management_System.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var project = await _projectService.DeleteAsync(id); // جلب المشروع بناءً على الـ Id
-            if (project == null)
+            if (project == 0)
             {
                 return NotFound();
             }
-
-            // var teams = _projectService.GetTeams();
-
-            // وضع الـ teams في الـ ViewData
-            // ViewData["Teams"] = new SelectList(teams, "Id", "Name");
-
-            return PartialView("_DetailsProject", project); // تمرير المشروع للـ View
+            return RedirectToAction("Index");
         }
 
 
