@@ -26,10 +26,10 @@
     <div class="form-control">
         <label>Team Names</label>
         <br />
-        @foreach (var item in Model.Teams)
+        @foreach (var item in Model.Teams.Where(t => t.IsSelected))
         {
             <div>
-                <input type="checkbox" checked name="TeamIds" value="@item.TeamId" readonly />
+                <input type="checkbox" checked name="TeamIds" value="@item.TeamId" readonly disabled />
                 <label>@item.Name</label>
             </div>
         }

@@ -72,14 +72,14 @@ namespace Task_Management_System.Controllers
         //
         public async Task<IActionResult> Details(int id)
         {
-            var project = await _projectService.GetDetailsAsync(id);
+            var project = await _projectService.GetAsync(id);
             if (project == null)
             {
                 return NotFound();
             }
 
            
-            return PartialView("_DetailsProject", project); 
+            return View("_DetailsProject", project); 
         }
         public async Task<IActionResult> Delete(int id)
         {
