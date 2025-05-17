@@ -2,8 +2,13 @@
 using Task_Management_System.Models;
 using Task_Management_System.Repository.Pro;
 using Task_Management_System.Repository.Team;
+using Task_Management_System.Repository.User;
+using Task_Management_System.Services.Mappings;
 using Task_Management_System.Services.projects;
 using Task_Management_System.Services.Teams;
+using Task_Management_System.Services.User;
+using AutoMapper;
+//using AutoMapper.Extensions.Microsoft.DependencyInjection;
 
 
 namespace Task_Management_System
@@ -23,11 +28,16 @@ namespace Task_Management_System
             // تسجيل الخدمة في الـ Dependency Injection Container
             builder.Services.AddScoped<IProjectService, ProjectService>();
             builder.Services.AddScoped<ITeamService, TeamService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
 
 
             // repo
             builder.Services.AddScoped<IProjectRepo, ProjectRepo>();
             builder.Services.AddScoped<ITeamRepo, TeamRepo>();
+            builder.Services.AddScoped<IUserRepo, UserRepo>();
+
 
             var app = builder.Build();
 

@@ -1,17 +1,18 @@
-﻿@* @model List<Task_Management_System.Models.User>
-
+﻿@model List<Task_Management_System.Controllers.DTO.UserDto>
 @{
     ViewData["Title"] = "Users List";
 }
 
-<h2 class="text-center">Users List</h2>
-
+<h2 class="text-center">Users </h2>
+<a href="/User/Create" class="btn btn-success">Create User</a>
 <div class="container mt-4">
     <table class="table table-bordered table-striped">
         <thead class="table-dark">
             <tr>
                 <th>#</th>
-                <th>Name</th>
+                <th>FullName</th>
+                <th>Email</th>
+                <th>Passwoard</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -22,11 +23,15 @@
                 {
                     <tr>
                         <td>@user.Id</td>
-                        <td>@user.Name</td>
+                        <td>@user.FullName</td>
+                        <td>@user.Email</td>
+                        <td>@user.PasswordHash</td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-warning btn-sm">Edit</a>
-                            <a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
-                        </td>
+                            <a href="@Url.Action("Details", "User", new { id = @user.Id })" class="btn btn-info btn-sm">Details</a>
+                            <a href="@Url.Action("Edit", "User", new { id = @user.Id})" class="btn btn-warning btn-sm">Edit</a>
+                            <button class="btn btn-danger delete-button" data-id="@user.Id">Delete</button>
+@*                             <a href="@Url.Action("Create", "User", new { id = team.TeamId })" class="btn btn-success btn-sm">Assign To Task</a>
+ *@                        </td>
                     </tr>
                 }
             }
@@ -39,6 +44,27 @@
         </tbody>
     </table>
 
-    <a asp-action="Create" class="btn btn-primary">Add New User</a>
 </div>
- *@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.querySelectorAll(".delete-button").forEach(button => {
+        button.addEventListener("click", function () {
+            const id = this.getAttribute("data-id");
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/Team/Delete/${id}`;
+                }
+            });
+        });
+    });
+</script>
+

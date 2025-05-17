@@ -1,21 +1,24 @@
-﻿/*using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using Task_Management_System.Controllers.DTO;
 using Task_Management_System.Models;
+using Task_Management_System.Services.User;
 
 namespace Task_Management_System.Controllers
 {
     public class UserController : Controller
     {
-        readonly TaskManagmentContext _context;
-        public UserController(TaskManagmentContext context)
+        readonly IUserService _userService;
+        public UserController(IUserService userService)
         {
-            _context = context;
+            _userService = userService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
 
-            List<User> usersmodel = _context.Users.ToList();
-            return View(usersmodel);
+            var users = await _userService.GetAllAsync();
+            return View(users);
         }
 
         public IActionResult Create()
@@ -23,24 +26,23 @@ namespace Task_Management_System.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(CreateUserDTO userdto)
+        public async Task<IActionResult> Create(CreateUserDTO userdto)
         {
-
+            
             if (!ModelState.IsValid)
             {
-                return View(userdto);
+                userdto.CreatedAt = DateTime.Now.ToString();
+                var user = await _userService.AddAsync(userdto);
+
+                if (user == null)
+                    return NotFound();
+
+                return RedirectToAction("Index");
             }
-            var newuser = new User
-            {
-                Name= userdto.Name
 
-            };
-            _context.Users.Add(newuser);
-            _context.SaveChanges();
-
-            return RedirectToAction("index");
+            return View(userdto); // Return the form with validation errors if any
         }
+
 
     }
 }
-*/
