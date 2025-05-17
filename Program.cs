@@ -29,7 +29,8 @@ namespace Task_Management_System
             builder.Services.AddScoped<IProjectService, ProjectService>();
             builder.Services.AddScoped<ITeamService, TeamService>();
             builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+            builder.Services.AddAutoMapper(typeof(TeamMappingProfile));
+            builder.Services.AddAutoMapper(typeof(TeamMappingProfile));
 
 
 

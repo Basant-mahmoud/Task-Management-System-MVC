@@ -43,5 +43,16 @@ namespace Task_Management_System.Repository.Team
             _context.Teams.Update(team);
             return _context.SaveChangesAsync();
         }
+        public async Task<List<Models.Team>> GetTeamsByUserIdAsync(int userId)
+        {
+            var teams = await _context.TeamMembers
+                .Where(tm => tm.UserId == userId)
+                .Include(tm => tm.Team) // جلب بيانات الفريق
+                .Select(tm => tm.Team)
+                .ToListAsync();
+
+            return teams;
+        }
+
     }
 }

@@ -9,5 +9,7 @@ namespace Task_Management_System.Repository.Team
         Task<int> AddAsync(Models.Team team);
         Task<int> UpdateProjectAsync(Models.Team team);
         Task<int> DeleteAsync(Models.Team team);
+        Task<List<Models.Team>> GetTeamsByUserIdAsync(int userId);
+
     }
 }

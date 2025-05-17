@@ -5,9 +5,9 @@ using Task_Management_System.Models.Enum;
 
 namespace Task_Management_System.Services.Mappings
 {
-    public class AutoMapperProfile: Profile
+    public class TeamMappingProfile: Profile
     {
-        public AutoMapperProfile()
+        public TeamMappingProfile()
         {
             /* CreateMap<UserDto, Models.User>();
              CreateMap<UserDto, Models.User>();

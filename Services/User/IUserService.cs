@@ -10,5 +10,7 @@ namespace Task_Management_System.Services.User
         Task<int> DeleteAsync(int id);
         Task<IEnumerable<UserDto>> GetAllAsync();
         Task<UserDto> GetAsync(int id);
+        Task<UserInfoDto> GetUserTeamsWithTasksAndProjectsAsync(int userId);
+
     }
 }

@@ -73,6 +73,19 @@ namespace Task_Management_System.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> Details(int id)
+        {
+            var user = await _userService.GetUserTeamsWithTasksAndProjectsAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+
+            return View("_Details", user);
+        }
+
+
 
     }
 }

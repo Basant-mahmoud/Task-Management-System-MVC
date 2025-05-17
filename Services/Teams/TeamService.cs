@@ -1,15 +1,22 @@
 ﻿using Task_Management_System.Controllers.DTO;
 using Task_Management_System.Repository.Team;
 using Task_Management_System.Models;
+using AutoMapper;
+using Task_Management_System.Repository.User;
 
 namespace Task_Management_System.Services.Teams
 {
     public class TeamService : ITeamService
     {
+        private readonly IMapper _mapper;
         private readonly ITeamRepo _teamRepo;
-        public TeamService(ITeamRepo teamRepo)
+        private readonly IUserRepo _userRepo;
+
+        public TeamService(ITeamRepo teamRepo, IMapper mapper, IUserRepo userRepo)
         {
             _teamRepo = teamRepo;
+            _mapper = mapper;
+            _userRepo = userRepo;
         }
 
         public async Task<int> AddAsync(TeamDto teamDto)
@@ -101,6 +108,28 @@ namespace Task_Management_System.Services.Teams
             {
                 throw new InvalidOperationException("Error occurred while Getting the team.", ex);
             }
+        }
+
+        public async Task<IEnumerable<TeamDto>> GetTeamsByUserIdAsync(int userId)
+        {
+            try
+            {
+                var user = await _userRepo.GetAsync(userId);
+                if(user==null)
+                    throw new Exception("user not found.");
+                var teamsmodel = await _teamRepo.GetTeamsByUserIdAsync(userId);
+                if (!teamsmodel.Any())
+                {
+                    return new List<TeamDto>();
+                }
+                var teamsDto = _mapper.Map <IEnumerable<TeamDto>>(teamsmodel);
+                return teamsDto;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Error occurred while Geting  all user.", ex);
+            }
+
         }
 
         public async Task<int> UpdateAsync(int id, TeamDto updatedTeam)

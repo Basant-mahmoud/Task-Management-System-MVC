@@ -1,0 +1,67 @@
+﻿@model Task_Management_System.Controllers.DTO.UserInfoDto
+
+@{
+    ViewData["Title"] = "User Info";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-primary">👤 User Info</h2>
+    <div class="card mb-4">
+        <div class="card-body">
+            <p><strong>Name:</strong> @Model.User.FullName</p>
+            <p><strong>Email:</strong> @Model.User.Email</p>
+            <p><strong>Role:</strong> @Model.User.Role</p>
+        </div>
+    </div>
+
+    <h4 class="text-secondary">👥 Teams</h4>
+
+    @if (Model.Teams != null && Model.Teams.Any())
+    {
+        foreach (var team in Model.Teams)
+        {
+            <div class="card mb-3">
+                <div class="card-header bg-light">
+                    <strong>Team:</strong> @team.TeamName
+                </div>
+                <div class="card-body">
+                    <p><strong>Description:</strong> @team.Description</p>
+
+                    @if (team.Tasks != null && team.Tasks.Any())
+                    {
+                        var projectsGrouped = team.Tasks.GroupBy(t => new { t.ProjectId, t.ProjectTitle });
+
+                        foreach (var projectGroup in projectsGrouped)
+                        {
+                            <div class="border-start border-3 ps-3 mb-3">
+                                <h6 class="text-info">📁 Project: @projectGroup.Key.ProjectTitle</h6>
+                                <p><strong>Status:</strong> <!-- ممكن تحطي حالة المشروع لو متوفرة --></p>
+
+                                <ul class="list-group mb-2">
+                                    @foreach (var task in projectGroup)
+                                    {
+                                        <li class="list-group-item">
+                                            <strong>Task:</strong> @task.TaskTitle <br />
+                                            <small>
+                                                Status: @task.TaskStatus
+                                            </small>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted">No tasks found for this team.</p>
+                    }
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-info">This user doesn't belong to any team yet.</div>
+    }
+</div>
+

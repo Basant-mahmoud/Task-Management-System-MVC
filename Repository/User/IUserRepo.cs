@@ -10,5 +10,7 @@ namespace Task_Management_System.Repository.User
         Task<int> DeleteAsync(Models.User user);
         Task<IEnumerable<Models.User>> GetAllAsync();
         Task<Models.User> GetAsync(int id);
+        Task<List<TeamWithTasksAndProjectsDto>> GetUserTeamsWithTasksAndProjectsAsync(int userId);
+
     }
 }

@@ -89,6 +89,31 @@ namespace Task_Management_System.Services.User
             }
         }
 
+        public async Task<UserInfoDto> GetUserTeamsWithTasksAndProjectsAsync(int userId)
+        {
+            try
+            {
+                var user = await _userRepo.GetAsync(userId);
+                if (user == null)
+                    throw new Exception("Can't find this user");
+
+                var result = await _userRepo.GetUserTeamsWithTasksAndProjectsAsync(userId);
+
+                var userDto = _mapper.Map<UserDto>(user); 
+
+                return new UserInfoDto
+                {
+                    User = userDto,
+                    Teams = result
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error occurred while fetching user info.", ex);
+            }
+        }
+
+
         public async Task<int> UpdateAsync(int id, UserDto updatedUserDto)
         {
             try

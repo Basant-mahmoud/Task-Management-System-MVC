@@ -9,5 +9,6 @@ namespace Task_Management_System.Services.Teams
         Task<int> DeleteAsync(int id);
         Task<IEnumerable<TeamDto>> GetAllAsync();
         Task<TeamDto> GetAsync(int id);
+        Task<IEnumerable<TeamDto>> GetTeamsByUserIdAsync(int userId);
     }
 }

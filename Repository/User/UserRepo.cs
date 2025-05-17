@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using Task_Management_System.Controllers.DTO;
 using Task_Management_System.Models;
 
 namespace Task_Management_System.Repository.User
@@ -41,6 +42,33 @@ namespace Task_Management_System.Repository.User
         {
             _context.Users.Update(user);
             return await _context.SaveChangesAsync();
+        }
+        public async Task<List<TeamWithTasksAndProjectsDto>> GetUserTeamsWithTasksAndProjectsAsync(int userId)
+        {
+            var teams = await _context.TeamMembers
+                .Where(tm => tm.UserId == userId)
+                .Include(tm => tm.Team)
+                    .ThenInclude(t => t.ProjectTeams)
+                        .ThenInclude(pt => pt.Project)
+                            .ThenInclude(p => p.Tasks)
+                .Select(tm => new TeamWithTasksAndProjectsDto
+                {
+                    TeamId = tm.Team.Id,
+                    TeamName = tm.Team.Name,
+                    Tasks = tm.Team.ProjectTeams
+                        .SelectMany(pt => pt.Project.Tasks)
+                        .Select(task => new TaskWithProjectDto
+                        {
+                            TaskId = task.Id,
+                            TaskTitle = task.Title,
+                            TaskStatus = task.Status,
+                            ProjectId = task.Project.Id,
+                            ProjectTitle = task.Project.Title
+                        }).ToList()
+                })
+                .ToListAsync();
+
+            return teams;
         }
     }
 }
