@@ -1,0 +1,28 @@
+﻿@model Task_Management_System.Controllers.DTO.UserDto
+@using Task_Management_System.Models.Enum
+
+<form action="/User/Edit" method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <div class="col-md-12">
+        <label>Full Name</label>
+        <input type="text" name="FullName" class="form-control" value="@Model.FullName" />
+    </div>
+    <div class="col-md-12">
+        <label>Email</label>
+        <textarea name="Email" class="form-control">@Model.Email</textarea>
+    </div>
+    <div class="col-md-12">
+        <label>Passwoard</label>
+        <input name="PasswordHash" class="form-control" type="text" value="@Model.PasswordHash" />
+    </div>
+    <div class="col-md-12">
+        <label>Role</label>
+        <select name="Role" class="form-control" asp-for="Role" asp-items="Html.GetEnumSelectList<UserRole>()">
+        </select>
+    </div>
+    <div class="col-md-12">
+        <label>Date To join</label>
+        <input name="CreatedAt" class="form-control" type="date" value="@DateTime.Parse(Model.CreatedAt).ToString("yyyy-MM-dd")" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Save</button>
+</form>

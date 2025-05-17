@@ -42,6 +42,36 @@ namespace Task_Management_System.Controllers
 
             return View(userdto); // Return the form with validation errors if any
         }
+        public async Task<IActionResult> Edit(int id)
+        {
+            var user = await _userService.GetAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View("_Edit", user);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(UserDto userdto)
+        {
+            var user = await _userService.UpdateAsync(userdto.Id, userdto);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> Delete(int id)
+        {
+            var project = await _userService.DeleteAsync(id);
+            if (project == 0)
+            {
+                return NotFound();
+            }
+            return RedirectToAction("Index");
+        }
 
 
     }

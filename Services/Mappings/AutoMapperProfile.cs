@@ -18,9 +18,20 @@ namespace Task_Management_System.Services.Mappings
             CreateMap<CreateUserDTO, Models.User>()
          .ForMember(dest => dest.Role,
                opt => opt.MapFrom(src => src.Role.ToString()));
-            CreateMap<UserDto, Models.User>();
-            CreateMap<Models.User, UserDto>();
-             
+
+
+
+            CreateMap<Models.User, UserDto>()
+            .ForMember(dest => dest.Role,
+            opt => opt.MapFrom(src => Enum.Parse<UserRole>(src.Role, true)));
+
+
+            CreateMap<UserDto, Models.User>()
+          .ForMember(dest => dest.Role,
+               opt => opt.MapFrom(src => src.Role.ToString()));
+
+            // CreateMap<UserDto, Models.User>();
+
 
         }
     }
