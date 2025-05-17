@@ -114,11 +114,11 @@ namespace Task_Management_System.Services.projects
                     EndDate= DateTime.Parse(project.EndDate),
                     StartDate= DateTime.Parse(project.StartDate),
                     Status = Enum.Parse<ProjectStatus>(project.Status),
-                    Teams = project.ProjectTeams?.Select(pt => new TeamDto
+                    Teams = project.ProjectTeams?.Select(pt => new GetTeamDto
                     {
                          TeamId = pt.TeamId,
                         Name = pt.Team.Name 
-                    }).ToList() ?? new List<TeamDto>()
+                    }).ToList() ?? new List<GetTeamDto>()
                 }).ToList();
                 return projectDto;
             }
@@ -137,18 +137,24 @@ namespace Task_Management_System.Services.projects
                     throw new KeyNotFoundException("Project not found.");
                 }
 
-                var allTeams = (List<TeamDto>)await _teamService.GetAllAsync();
+                // Get all teams in the system
+                var allTeamDtos = await _teamService.GetAllAsync(); // returns List<TeamDto>
 
+                // Get team IDs associated with the project
                 var selectedTeamIds = existingProject.ProjectTeams?
                     .Select(pt => pt.TeamId)
                     .ToList() ?? new List<int>();
 
-                // علامه للـ TeamDto إنه selected
-                foreach (var team in allTeams)
-                {
-                    if (selectedTeamIds.Contains(team.TeamId))
-                        team.IsSelected = true;
-                }
+                // Map all teams and mark selected ones
+                var allTeams = allTeamDtos
+                    .Select(t => new GetTeamDto
+                    {
+                        TeamId = t.TeamId,
+                        Name = t.Name,
+                        Description = t.Description,
+                        IsSelected = selectedTeamIds.Contains(t.TeamId)
+                    })
+                    .ToList();
 
                 return new ProjectDto
                 {
@@ -164,9 +170,10 @@ namespace Task_Management_System.Services.projects
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException("Error occurred while fetching projects.", ex);
+                throw new InvalidOperationException("Error occurred while fetching the project.", ex);
             }
         }
+
         public async Task<ProjectDto> GetDetailsAsync(int id)
         {
             try
@@ -185,11 +192,11 @@ namespace Task_Management_System.Services.projects
                     EndDate = DateTime.Parse(exsitingProject.EndDate),
                     StartDate = DateTime.Parse(exsitingProject.StartDate),
                     Status = Enum.Parse<ProjectStatus>(exsitingProject.Status),
-                    Teams = exsitingProject.ProjectTeams?.Select(pt => new TeamDto
+                    Teams = exsitingProject.ProjectTeams?.Select(pt => new GetTeamDto
                     {
                         TeamId = pt.TeamId,
                         Name = pt.Team.Name
-                    }).ToList() ?? new List<TeamDto>()
+                    }).ToList() ?? new List<GetTeamDto>()
                 };
                 return p;
             }

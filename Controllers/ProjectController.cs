@@ -30,9 +30,18 @@ namespace Task_Management_System.Controllers
         // for open form
         public async Task<IActionResult> Create()
         {
+            var allTeams = await _teamService.GetAllAsync(); // List<TeamDto>
+
+            var getTeamDtos = allTeams.Select(t => new GetTeamDto
+            {
+                TeamId = t.TeamId,
+                Name = t.Name,
+                IsSelected = false
+            }).ToList();
+
             var projectDto = new ProjectDto
             {
-                Teams = (List<TeamDto>)await _teamService.GetAllAsync()
+                Teams = getTeamDtos
             };
             return View("_CreateProject", projectDto);
         }
@@ -45,7 +54,7 @@ namespace Task_Management_System.Controllers
                 await _projectService.AddAsync(projectDto);
                 return RedirectToAction("Index");
             }
-            projectDto.Teams = (List<TeamDto>)await _teamService.GetAllAsync(); 
+            projectDto.Teams = (List<GetTeamDto>)await _teamService.GetAllAsync(); 
             return PartialView("_CreateProject", projectDto);
         }
         public async Task<IActionResult> Edit(int id)

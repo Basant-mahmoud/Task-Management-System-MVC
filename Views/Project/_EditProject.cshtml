@@ -21,8 +21,12 @@
     </div>
     <div class="col-md-12">
         <label>Project Status</label>
-        <select name="Status" asp-items="Html.GetEnumSelectList<ProjectStatus>()" class="form-control"></select>
+        <select name="Status" class="form-control" asp-for="Status" asp-items="Html.GetEnumSelectList<ProjectStatus>()">
+        </select>
     </div>
+
+
+
     <br />
     <div class="form-control">
         <label>Team Names</label>

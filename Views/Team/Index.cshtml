@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Task_Management_System.Controllers.DTO.TeamDto>
+
+@{
+    ViewData["Title"] = "Teams";
+}
+
+<h2>Teams</h2>
+<a href="/Team/Create" class="btn btn-success">Create Team</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th> # Team ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var team in Model)
+        {
+            <tr>
+                <td>@team.TeamId</td>
+                <td>@team.Name</td>
+                <td>@team.Description</td>
+                
+
+                <td>
+                    <a href="@Url.Action("Details", "Team", new { id = team.TeamId })" class="btn btn-info btn-sm">Details</a>
+                    <a href="@Url.Action("Edit", "Team", new { id = team.TeamId })" class="btn btn-warning btn-sm">Edit</a>
+                    <button class="btn btn-danger delete-button" data-id="@team.TeamId">Delete</button>
+                    <a href="@Url.Action("Create", "Team", new { id = team.TeamId })" class="btn btn-success btn-sm">Assign To Project</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.querySelectorAll(".delete-button").forEach(button => {
+        button.addEventListener("click", function () {
+            const id = this.getAttribute("data-id");
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/Team/Delete/${id}`;
+                }
+            });
+        });
+    });
+</script>
+
