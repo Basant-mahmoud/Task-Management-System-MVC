@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using Task_Management_System.Controllers.DTO;
 using Task_Management_System.Models;
 
 namespace Task_Management_System.Repository.Team
@@ -52,6 +53,12 @@ namespace Task_Management_System.Repository.Team
                 .ToListAsync();
 
             return teams;
+        }
+        public async Task<int> AddMemberToTeam(TeamMember member)
+        {
+            var addmember = await _context.TeamMembers.AddAsync(member);
+
+            return await _context.SaveChangesAsync();
         }
 
     }

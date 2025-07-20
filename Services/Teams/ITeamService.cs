@@ -10,5 +10,6 @@ namespace Task_Management_System.Services.Teams
         Task<IEnumerable<TeamDto>> GetAllAsync();
         Task<TeamDto> GetAsync(int id);
         Task<IEnumerable<TeamDto>> GetTeamsByUserIdAsync(int userId);
+        Task<int> AddMemberToTeam(AddMemberDto member);
     }
 }

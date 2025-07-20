@@ -1,4 +1,5 @@
-﻿using Task_Management_System.Models;
+﻿using Task_Management_System.Controllers.DTO;
+using Task_Management_System.Models;
 
 namespace Task_Management_System.Repository.Team
 {
@@ -10,6 +11,6 @@ namespace Task_Management_System.Repository.Team
         Task<int> UpdateProjectAsync(Models.Team team);
         Task<int> DeleteAsync(Models.Team team);
         Task<List<Models.Team>> GetTeamsByUserIdAsync(int userId);
-
+        Task<int> AddMemberToTeam(TeamMember member);
     }
 }

@@ -132,6 +132,7 @@ namespace Task_Management_System.Services.Teams
 
         }
 
+
         public async Task<int> UpdateAsync(int id, TeamDto updatedTeam)
         {
             try
@@ -153,6 +154,26 @@ namespace Task_Management_System.Services.Teams
             }
 
 
+        }
+
+        public async Task<int> AddMemberToTeam(AddMemberDto member)
+        {
+            try
+            {
+                var team = await _teamRepo.GetAsync(member.TeamId);
+                if(team==null)
+                    throw new Exception("Team not found create team frist.");
+                var teammodel = _mapper.Map<TeamMember>(member);
+                var result = await _teamRepo.AddMemberToTeam(teammodel);
+                if(result==0)
+                    throw new Exception("Error in adding member to team");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error occurred while adding member to team.", ex);
+            }
         }
     }
 }

@@ -42,6 +42,19 @@ namespace Task_Management_System.Controllers
             }
             return RedirectToAction("Index");
         }
+        public async Task<IActionResult> AddMemder()
+        {
+
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddMemder(AddMemberDto member)
+        {
+            var teams = await _teamService.AddMemberToTeam(member);
+            if (teams == null)
+                return NotFound();
+            return RedirectToAction("Index");
+        }
 
 
     }

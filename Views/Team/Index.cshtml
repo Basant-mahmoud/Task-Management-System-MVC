@@ -29,7 +29,7 @@
                     <a href="@Url.Action("Details", "Team", new { id = team.TeamId })" class="btn btn-info btn-sm">Details</a>
                     <a href="@Url.Action("Edit", "Team", new { id = team.TeamId })" class="btn btn-warning btn-sm">Edit</a>
                     <button class="btn btn-danger delete-button" data-id="@team.TeamId">Delete</button>
-                    <a href="@Url.Action("Create", "Team", new { id = team.TeamId })" class="btn btn-success btn-sm">Assign To Project</a>
+                    <a href="@Url.Action("AddMemder", "Team", new { id = team.TeamId })" class="btn btn-success btn-sm">ADD Member</a>
                 </td>
             </tr>
         }
